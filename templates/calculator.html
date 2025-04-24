@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Financial Analysis - Textile Subsidy Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Textile Subsidy Calculator</h1>
+            <p>Calculate eligible subsidies and financial analysis for textile industry investments</p>
+        </header>
+
+        <div class="breadcrumbs">
+            <a href="{{ url_for('welcome') }}">Home</a> &gt; Financial Analysis
+        </div>
+
+        <div class="top-row">
+            <div class="condition-card">
+                <h3>Conditions for Capital Subsidy</h3>
+                <ul>
+                    <li>The Capital Subsidy will only be eligible to the Industrial Units availing Term Loan.</li>
+                    <li>Capital Subsidy is only for new machinery and for machines older than 10 years (Imported).</li>
+                    <li>Paid after commencement of production.</li>
+                    <li>Disbursed in five equal annual installments.</li>
+                    <li>Application must be submitted within the stipulated timeline (within 1 year).</li>
+                    <li>Term Loan must be sanctioned within 1 year from DoCP.</li>
+                </ul>
+            </div>
+            <div class="condition-card">
+                <h3>Conditions for Interest Subsidy</h3>
+                <ul>
+                    <li>Interest subsidy is available only on term loan disbursed for eligible Gross Fixed Capital Investment..</li>
+                    <li>Units must choose the subsidy eligibility date from either first loan disbursement or DoCP.</li>
+                    <li>Late applications will face deductions based on the delayed submission period.</li>
+                    <li>Subsidy claims can be made only after obtaining the Eligibility Certificate.</li>
+                    <li>Only interest and installments paid to financial institutions are eligible for reimbursement.</li>
+                    <li>Units must bear at least 2% interest even after availing subsidies from both State and Central governments.</li>
+                </ul>
+            </div>
+            <div class="condition-card">
+                <h3>Conditions for Power Tariff Subsidy</h3>
+                <ul>
+                    <li>₹1.00/unit (kWh) availing power either from DISCOM or Renewable Power source.</li>
+                    <li>Not for captive power plants.</li>
+                    <li>Industrial unit name must appear on bills.</li>
+                    <li>Subsidy duration: 5 years.</li>
+                    <li>Applied as direct reduction to electricity rates.</li>
+                    <li>Monthly reimbursement based on actual consumption.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bottom-row">
+            <div class="condition-card">
+                <h3>Payroll Assistance Benefits</h3>
+                <ul>
+                    <li>Applicable for 5 years from DoCP.</li>
+                    <li>Only Gujarat domicile EPF workers.</li>
+                    <li>₹2,000-3,000/month for male workers and ₹2,000-3,000/month for female workers.</li>
+                    <li>Must be employed for at least 85% of the month.</li>
+                    <li>No double benefits from other schemes.</li>
+                    <li>Monthly reimbursement based on employment verification.</li>
+                </ul>
+            </div>
+            <div class="condition-card">
+                <h3>SHG Job Work Assistance</h3>
+                <ul>
+                    <li>Only for female SHG workers.</li>
+                    <li>₹5,000/month + job work charge.</li>
+                    <li>Amount must be credited to SHG account.</li>
+                    <li>SHG must be registered for at least 1 year.</li>
+                    <li>Minimum group size of 10 members required.</li>
+                    <li>Training and skill development support available.</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="form-section">
+            <h2>Financial Analysis Calculator</h2>
+            <form method="post" action="{{ url_for('calculator') }}" class="calculator-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="district">Select District:</label>
+                        <select id="district" name="district" required>
+                            <option value="">-- Select District --</option>
+                            {% for district in districts %}
+                            <option value="{{ district }}">{{ district }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taluka">Select Taluka:</label>
+                        <select id="taluka" name="taluka" required>
+                            <option value="">-- First Select District --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Select Activity:</label>
+                        <select id="activity" name="activity" required>
+                            <option value="1">Ginning, Spinning, Weaving, Dyeing, Printing, Processing</option>
+                            <option value="2">Garment, Technical Textiles & Made-ups</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="investment">Total Investment (in ₹):</label>
+                        <input type="number" step="0.01" id="investment" name="investment" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="machine_price">Machine Price (in ₹):</label>
+                        <input type="number" step="0.01" id="machine_price" name="machine_price" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="machine_type">Type of Machinery:</label>
+                        <select id="machine_type" name="machine_type" required>
+                            <option value="new">New Machinery</option>
+                            <option value="old">Old / Used Machinery</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Loan Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ltv_percentage">Loan-to-Value (LTV) Percentage:</label>
+                        <input type="number" step="0.1" id="ltv_percentage" name="ltv_percentage" value="70" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest_rate">Interest Rate (%):</label>
+                        <input type="number" step="0.01" id="interest_rate" name="interest_rate" value="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loan_term">Loan Term (years):</label>
+                        <input type="number" id="loan_term" name="loan_term" value="5" required>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Machine Specifications</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cfm_consumption">CFM Consumption:</label>
+                        <input type="number" step="0.1" id="cfm_consumption" name="cfm_consumption" value="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_per_unit">Rate per Unit (₹/kWh):</label>
+                        <input type="number" step="0.001" id="rate_per_unit" name="rate_per_unit" value="10.2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rpm">RPM (revolutions per machine):</label>
+                        <input type="number" id="rpm" name="rpm" value="800" required>
+                    </div>
+                </div>
+
+                <button type="submit">Calculate Financial Analysis</button>
+            </form>
+        </section>
+
+        {% if result %}
+        <section class="result-section">
+            <h2>Financial Analysis Results</h2>
+
+            <div class="machine-type-indicator">
+                <h3>Machine Type: <span class="highlight">{{ result.machine_type }}</span></h3>
+                <p class="machine-eligibility">
+                    {% if result.machine_type == "Old" %}
+                    <span class="warning">⚠️ Old machinery is not eligible for capital and interest subsidies</span>
+                    {% else %}
+                    <span class="success">✓ New machinery is eligible for all subsidies</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="result-table">
+                <table>
+                    <tr>
+                        <th colspan="2">Location & Category</th>
+                    </tr>
+                    <tr>
+                        <td>Taluka</td>
+                        <td>{{ result.taluka }}</td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td>{{ result.category }}</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2">Capital Subsidy</th>
+                    </tr>
+                    <tr>
+                        <td>Machine Price</td>
+                        <td>{{ result.machine_price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Capital Subsidy Rate</td>
+                        <td>{{ result.capital_subsidy_percentage }}</td>
+                    </tr>
+                    <tr>
+                        <td>Capital Subsidy Amount</td>
+                        <td>{{ result.capital_subsidy_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price After Capital Subsidy</td>
+                        <td>{{ result.price_after_capital_subsidy }}</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2">Loan Analysis</th>
+                    </tr>
+                    <tr>
+                        <td>LTV Percentage</td>
+                        <td>{{ result.ltv_percentage }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Loan Amount</td>
+                        <td>{{ result.loan_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Loan Term (Years)</td>
+                        <td>{{ result.loan_term }}</td>
+                    </tr>
+                    <tr>
+                        <td>Original Interest Rate</td>
+                        <td>{{ result.interest_rate }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Subsidy Rate</td>
+                        <td>{{ result.interest_subsidy_rate }}</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Amount (Subsidized)</td>
+                        <td>{{ result.interest_amount }}</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2">Power Consumption Analysis</th>
+                    </tr>
+                    <tr>
+                        <td>CFM Consumption</td>
+                        <td>{{ result.cfm_consumption }} CFM</td>
+                    </tr>
+                    <tr>
+                        <td>kWh per CFM</td>
+                        <td>{{ result.kwh_per_cfm }}</td>
+                    </tr>
+                    <tr>
+                        <td>kWh Consumption of Machine</td>
+                        <td>{{ result.machine_kwh_consumption }} kWh</td>
+                    </tr>
+                    <tr>
+                        <td>Annual Units Consumed</td>
+                        <td>{{ result.annual_units_consumed|round|int }} kWh</td>
+                    </tr>
+                    <tr>
+                        <td>Rate per Unit</td>
+                        <td>{{ result.rate_per_unit }}</td>
+                    </tr>
+                    <tr>
+                        <td>Electricity Bill per Machine per Year</td>
+                        <td>{{ result.electricity_bill_per_machine }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Cost of Machine (CS + IS + Electricity for 5 years)</td>
+                        <td>{{ result.total_machine_cost }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="additional-info">
+                <h3>Subsidy Policy Details</h3>
+                <ul>
+                    <li><strong>Power Tariff Subsidy:</strong> Category 1 areas receive ₹1.53/unit and other categories
+                        receive ₹1.02/unit for 5 years from the date of commercial production.</li>
+                    <li><strong>SHG Job Work:</strong> Female Self-Help Group workers receive ₹5,100/month plus job work
+                        charges. Payments are made directly to SHG accounts.</li>
+                    <li><strong>Payroll Assistance:</strong> ₹2,550/month for male workers and ₹3,825/month for female
+                        workers of Gujarat domicile for 5 years from DoCP.</li>
+                    <li><strong>Capital Subsidy:</strong> Disbursed in five equal annual installments after commencement
+                        of production.</li>
+                    <li><strong>Interest Subsidy:</strong> Applicable only for new machinery, with unit bearing minimum
+                        2% interest. Maximum duration is 5 years.</li>
+                </ul>
+            </div>
+
+            <div class="disclaimer">
+                <p><strong>Disclaimer:</strong> This calculator provides estimates based on current policy information.
+                    Actual subsidy amounts may vary. Please consult with relevant authorities for confirmation of
+                    eligibility and subsidy amounts.</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ url_for('calculator') }}" class="secondary-button">Calculate Again</a>
+                <a href="{{ url_for('welcome') }}" class="secondary-button">Back to Home</a>
+            </div>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>&copy; 2025 Textile Subsidy Calculator | Developed for Textile Industry</p>
+        </footer>
+    </div>
+
+    <script>
+        // JavaScript for district-taluka dropdown dependency
+        // JavaScript for district-taluka dropdown dependency
+        document.addEventListener('DOMContentLoaded', function () {
+            const districtSelect = document.getElementById('district');
+            const talukaSelect = document.getElementById('taluka');
+
+            // Function to update talukas based on selected district
+            function updateTalukas() {
+                const selectedDistrict = districtSelect.value;
+
+                // Clear current taluka options
+                talukaSelect.innerHTML = '';
+
+                if (!selectedDistrict) {
+                    // If no district selected, show default option
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '-- First Select District --';
+                    talukaSelect.appendChild(defaultOption);
+                    return;
+                }
+
+                // Fetch talukas for the selected district
+                fetch(`/talukas_by_district?district=${encodeURIComponent(selectedDistrict)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Add default option
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '-- Select Taluka --';
+                        talukaSelect.appendChild(defaultOption);
+
+                        // Group talukas by category
+                        const categoryGroups = {
+                            'Category 1': [],
+                            'Category 2': [],
+                            'Category 3': []
+                        };
+
+                        // Organize talukas by category
+                        for (const [taluka, category] of Object.entries(data)) {
+                            categoryGroups[category].push(taluka);
+                        }
+
+                        // Add talukas to select, grouped by category
+                        for (const [category, talukas] of Object.entries(categoryGroups)) {
+                            if (talukas.length > 0) {
+                                const group = document.createElement('optgroup');
+                                group.label = category;
+
+                                // Sort talukas alphabetically
+                                talukas.sort();
+
+                                // Add talukas to the group
+                                talukas.forEach(taluka => {
+                                    const option = document.createElement('option');
+                                    option.value = taluka;
+                                    option.textContent = taluka;
+                                    group.appendChild(option);
+                                });
+
+                                talukaSelect.appendChild(group);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching talukas:', error);
+
+                        // Add error option
+                        const errorOption = document.createElement('option');
+                        errorOption.value = '';
+                        errorOption.textContent = 'Error loading talukas';
+                        talukaSelect.appendChild(errorOption);
+                    });
+            }
+
+            // Add event listener to district select
+            districtSelect.addEventListener('change', updateTalukas);
+
+            // Initialize taluka dropdown if a result is available
+            /* {% if result %} */
+            // We need to pre-select the district that contains the result taluka
+            let resultTaluka = "{{ result.taluka }}";
+
+            // Try to find which district the result taluka belongs to
+            fetch('/district_talukas')
+                .then(response => response.json())
+                .then(districts => {
+                    let foundDistrict = false;
+                    districtLoop:
+                    for (const district in districts) {
+                        for (const category in districts[district]) {
+                            if (districts[district][category].includes(resultTaluka)) {
+                                // Found the district containing our taluka
+                                districtSelect.value = district;
+                                foundDistrict = true;
+
+                                // Update talukas list for this district
+                                updateTalukas();
+
+                                // After a short delay, select the taluka
+                                setTimeout(() => {
+                                    talukaSelect.value = resultTaluka;
+                                }, 500);
+
+                                break districtLoop;
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error pre-selecting district:', error);
+                });
+            /* {% endif %} */
+        });
+
+    </script>
+</body>
+
+</html>

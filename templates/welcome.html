@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Textile Subsidy Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Textile Subsidy Calculator</h1>
+            <p>Calculate eligible subsidies and financial analysis for textile industry investments</p>
+        </header>
+
+        <section class="project-type-section">
+            <h2>Select Your Project Type</h2>
+            <p class="intro-text">Choose whether you are starting a new unit, expanding an existing one, or modernising your equipment.</p>
+            
+            <div class="project-type-cards">
+                <div class="project-card">
+                    <h3>New Unit</h3>
+                    <div class="card-content">
+                        <div class="card-icon">🏭</div>
+                        <p>Start a completely new textile manufacturing facility or unit.</p>
+                        <ul class="eligibility-list">
+                            <li>Eligible for capital subsidy on new machinery</li>
+                            <li>Interest subsidy available for term loans</li>
+                            <li>Power tariff subsidy for 5 years</li>
+                            <li>Payroll assistance benefits for local workers</li>
+                        </ul>
+                        <a href="{{ url_for('new_unit') }}" class="project-button">Select New Unit</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <h3>Expansion / Diversification</h3>
+                    <div class="card-content">
+                        <div class="card-icon">⚙️</div>
+                        <p>Expand or upgrade an existing textile manufacturing facility.</p>
+                        <ul class="eligibility-list">
+                            <li>Must invest at least 25% of original GFCI</li>
+                            <li>At least 60% of expansion for machinery</li>
+                            <li>Must increase production capacity by 25%</li>
+                            <li>Current utilization must be at least 75%</li>
+                        </ul>
+                        <a href="{{ url_for('expansion') }}" class="project-button">Select Expansion</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <h3>Modernisation</h3>
+                    <div class="card-content">
+                        <div class="card-icon">🔄</div>
+                        <p>Upgrade old machines with modern technology in an existing unit.</p>
+                        <ul class="eligibility-list">
+                            <li>Old machinery must be at least 20 years old</li>
+                            <li>Must invest at least 25% of existing GFCI</li>
+                            <li>Must use updated/modern technology</li>
+                            <li>Must be in the same factory premises</li>
+                        </ul>
+                        <a href="{{ url_for('modernisation') }}" class="project-button">Select Modernisation</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="definition-section">
+            <h3>Important Definitions</h3>
+            
+            <div class="definition-card">
+                <h4>Gross Fixed Capital Investment (GFCI)</h4>
+                <p>The total money a company spends to build or grow its factory (except land cost).</p>
+                <ul>
+                    <li>Includes factory buildings, machinery, tools, electricity setup, pollution control</li>
+                    <li>Only items purchased during the project period count</li>
+                    <li>Land cost is excluded from GFCI</li>
+                </ul>
+            </div>
+            
+            <div class="definition-card">
+                <h4>Eligible Fixed Capital Investment (eFCI)</h4>
+                <p>The part of GFCI that the government will accept when giving subsidies.</p>
+                <ul>
+                    <li>Includes new buildings (never used before)</li>
+                    <li>Admin buildings (offices) are eligible</li>
+                    <li>Cost counted as lower of actual cost or government-approved rates</li>
+                    <li>Rented buildings don't count (except GIDC sheds)</li>
+                    <li>Worker dormitories are eligible for eFCI</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Textile Subsidy Calculator | Developed for Textile Industry</p>
+        </footer>
+    </div>
+</body>
+</html>

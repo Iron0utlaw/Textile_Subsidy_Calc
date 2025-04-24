@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modernisation Eligibility - Textile Subsidy Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Textile Subsidy Calculator</h1>
+            <p>Modernisation Project Eligibility Check</p>
+        </header>
+
+        <div class="breadcrumbs">
+            <a href="{{ url_for('welcome') }}">Home</a> &gt; Modernisation Eligibility
+        </div>
+
+        <section class="eligibility-info">
+            <h2>Modernisation Project Requirements</h2>
+            <div class="info-card">
+                <ul class="eligibility-checklist">
+                    <li>Old plant and machinery must have been used for at least <strong>20 years</strong></li>
+                    <li>Must invest at least <strong>25%</strong> of existing GFCI</li>
+                    <li>Must replace old machinery with new machinery using updated/modern technology</li>
+                    <li>Modernisation must happen in the same factory premises</li>
+                    <li>Can use existing utilities without affecting eligibility</li>
+                    <li>Must improve production efficiency through newer technology</li>
+                </ul>
+            </div>
+        </section>
+
+        {% if is_eligible is not defined %}
+        <section class="form-section">
+            <h2>Check Your Modernisation Eligibility</h2>
+            <form method="post" action="{{ url_for('modernisation') }}" class="calculator-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="original_gfci">Original Investment (GFCI) in ₹:</label>
+                        <input type="number" step="0.01" id="original_gfci" name="original_gfci" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modernisation_amount">Modernisation Investment in ₹:</label>
+                        <input type="number" step="0.01" id="modernisation_amount" name="modernisation_amount" required>
+                    </div>
+                </div>
+
+                <div class="form-note">
+                    <p><strong>Note:</strong> The total investment in modernisation must be at least 25% of the existing GFCI.</p>
+                </div>
+
+                <button type="submit">Check Eligibility</button>
+            </form>
+        </section>
+        {% else %}
+        <section class="result-section">
+            <h2>Modernisation Eligibility Results</h2>
+            
+            <div class="eligibility-status">
+                {% if is_eligible %}
+                <div class="status-success">
+                    <h3>✅ Your project is eligible for modernisation subsidies!</h3>
+                    <p>You may proceed to the financial analysis calculator.</p>
+                </div>
+                {% else %}
+                <div class="status-failed">
+                    <h3>❌ Your project does not meet modernisation eligibility requirements</h3>
+                    <p>Please review the requirements and adjust your project details.</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="eligibility-details">
+                <h3>Eligibility Check Details</h3>
+                <ul class="check-list">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="result-summary">
+                <h3>Summary</h3>
+                <div class="result-table">
+                    <table>
+                        <tr>
+                            <td>Original Investment (GFCI)</td>
+                            <td>₹{{ "{:,.2f}".format(original_gfci) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Modernisation Investment</td>
+                            <td>₹{{ "{:,.2f}".format(modernisation_amount) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Investment Percentage</td>
+                            <td>{{ "{:.1f}".format(investment_percentage) }}%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{{ url_for('modernisation') }}" class="secondary-button">Start Over</a>
+                {% if is_eligible %}
+                <a href="{{ url_for('calculator') }}" class="primary-button">Continue to Financial Analysis</a>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>&copy; 2025 Textile Subsidy Calculator | Developed for Textile Industry</p>
+        </footer>
+    </div>
+</body>
+</html>

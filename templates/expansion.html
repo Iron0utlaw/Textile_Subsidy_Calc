@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expansion / Diversification Eligibility - Textile Subsidy Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Textile Subsidy Calculator</h1>
+            <p>Expansion / Diversification Project Eligibility Check</p>
+        </header>
+
+        <div class="breadcrumbs">
+            <a href="{{ url_for('welcome') }}">Home</a> &gt; Expansion Eligibility
+        </div>
+
+        <section class="eligibility-info">
+            <h2>Expansion / Diversification Project Requirements</h2>
+            <div class="info-card">
+                <ul class="eligibility-checklist">
+                    <li>Must invest at least <strong>25%</strong> more than original GFCI</li>
+                    <li>At least <strong>60%</strong> of expansion investment must be for machinery</li>
+                    <li>Must increase production capacity by at least <strong>25%</strong></li>
+                    <li>Must be using at least <strong>75%</strong> of current production capacity in any of the last 3 years</li>
+                    <li>Expanded section must be identifiable separately</li>
+                    <li>Can share utilities with existing factory (water, electricity, etc.)</li>
+                </ul>
+            </div>
+        </section>
+
+        {% if is_eligible is not defined %}
+        <section class="form-section">
+            <h2>Check Your Expansion / Diversification Eligibility</h2>
+            <form method="post" action="{{ url_for('expansion') }}" class="calculator-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="original_gfci">Original Investment (GFCI) in ₹:</label>
+                        <input type="number" step="0.01" id="original_gfci" name="original_gfci" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expansion_amount">Expansion Investment in ₹:</label>
+                        <input type="number" step="0.01" id="expansion_amount" name="expansion_amount" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="machine_investment">Machine Investment in ₹:</label>
+                        <input type="number" step="0.01" id="machine_investment" name="machine_investment" required>
+                        <small>Must be at least 60% of total expansion investment</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="production_increase">Production Capacity Increase (%):</label>
+                        <input type="number" step="0.1" id="production_increase" name="production_increase" min="0" max="1000" value="25" required>
+                    </div>
+                </div>
+
+                <div class="form-note">
+                    <p><strong>Note:</strong> Current production capacity utilization must be at least 75% in any of the last 3 years.</p>
+                </div>
+
+                <button type="submit">Check Eligibility</button>
+            </form>
+        </section>
+        {% else %}
+        <section class="result-section">
+            <h2>Expansion / Diversification Eligibility Results</h2>
+            
+            <div class="eligibility-status">
+                {% if is_eligible %}
+                <div class="status-success">
+                    <h3>✅ Your project is eligible for expansion subsidies!</h3>
+                    <p>You may proceed to the financial analysis calculator.</p>
+                </div>
+                {% else %}
+                <div class="status-failed">
+                    <h3>❌ Your project does not meet expansion eligibility requirements</h3>
+                    <p>Please review the requirements and adjust your project details.</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="eligibility-details">
+                <h3>Eligibility Check Details</h3>
+                <ul class="check-list">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="result-summary">
+                <h3>Summary</h3>
+                <div class="result-table">
+                    <table>
+                        <tr>
+                            <td>Original Investment (GFCI)</td>
+                            <td>₹{{ "{:,.2f}".format(original_gfci) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Expansion Investment</td>
+                            <td>₹{{ "{:,.2f}".format(expansion_amount) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Machine Investment</td>
+                            <td>₹{{ "{:,.2f}".format(machine_investment) }} ({{ "{:.1f}".format(machine_percentage) }}%)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{{ url_for('expansion') }}" class="secondary-button">Start Over</a>
+                {% if is_eligible %}
+                <a href="{{ url_for('calculator') }}" class="primary-button">Continue to Financial Analysis</a>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>&copy; 2025 Textile Subsidy Calculator | Developed for Textile Industry</p>
+        </footer>
+    </div>
+</body>
+</html>

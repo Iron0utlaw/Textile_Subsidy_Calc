@@ -290,7 +290,10 @@ def check_expansion_eligibility(original_gfci, expansion_amount, machine_investm
     
     return is_eligible, messages, utilization_required
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_folder="static",
+            template_folder="templates")
+
 
 @app.route('/', methods=['GET'])
 def welcome():
@@ -559,5 +562,3 @@ def calculate_api():
     
     return jsonify(result)
 
-if __name__ == '__main__':
-    app.run(debug=True)

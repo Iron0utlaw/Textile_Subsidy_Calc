@@ -5,8 +5,8 @@ import math
 DISTRICT_TALUKAS = {
     "Ahmedabad": {
         "Category 1": ["Dholera", "Detroj-Rampura", "Dhandhuka"],
-        "Category 2": ["Viramgam", "Bavla", "Dholka", "Sanand", "Mandal"],
-        "Category 3": ["Ahmedabad City", "Daskroi"]
+        "Category 2": ["Viramgam"],
+        "Category 3": ["Ahmedabad City", "Daskroi", "Bavla", "Dholka", "Sanand", "Mandal"]
     },
     "Amreli": {
         "Category 1": ["Khambha", "Dhari", "Lilia", "Savar Kundla", "Babra", "Kunkavav Vadia", "Lathi"],
@@ -29,9 +29,9 @@ DISTRICT_TALUKAS = {
         "Category 3": []
     },
     "Bharuch": {
-        "Category 1": ["Netrang", "Jambusar", "Valia"],
-        "Category 2": ["Amod", "Vagra", "Anklesvar", "Hansot"],
-        "Category 3": ["Bharuch", "Jhagadia"]
+        "Category 1": ["Netrang"],
+        "Category 2": ["Amod","Jambusar", "Valia"],
+        "Category 3": ["Bharuch", "Jhagadia","Vagra", "Anklesvar", "Hansot"]
     },
     "Bhavnagar": {
         "Category 1": ["Jesar", "Umrala", "Vallabhipur", "Gariadhar", "Palitana", "Talaja", "Ghogha"],
@@ -59,13 +59,13 @@ DISTRICT_TALUKAS = {
         "Category 3": []
     },
     "Gandhinagar": {
-        "Category 1": ["Mansa"],
-        "Category 2": ["Kalol", "Dehgam"],
-        "Category 3": ["Gandhinagar"]
+        "Category 1": [],
+        "Category 2": ["Mansa"],
+        "Category 3": ["Kalol", "Dehgam", "Gandhinagar"]
     },
     "Gir Somnath": {
-        "Category 1": ["Gir Gadhada", "Talala", "Sutrapada"],
-        "Category 2": ["Una", "Kodinar", "Veraval"],
+        "Category 1": ["Gir Gadhada", "Talala"],
+        "Category 2": ["Una", "Kodinar", "Veraval", "Sutrapada"],
         "Category 3": []
     },
     "Jamnagar": {
@@ -79,8 +79,8 @@ DISTRICT_TALUKAS = {
         "Category 3": ["Junagadh", "Junagadh City"]
     },
     "Kachchh": {
-        "Category 1": ["Rapar", "Nakhatrana", "Lakhpat"],
-        "Category 2": ["Abdasa", "Bhachau", "Bhuj", "Mandvi"],
+        "Category 1": ["Rapar", "Nakhatrana", "Lakhpat", "Mandvi"],
+        "Category 2": ["Abdasa", "Bhachau", "Bhuj"],
         "Category 3": ["Mundra", "Anjar", "Gandhidham"]
     },
     "Kheda": {
@@ -100,8 +100,8 @@ DISTRICT_TALUKAS = {
     },
     "Morbi": {
         "Category 1": ["Maliya"],
-        "Category 2": ["Halvad", "Morbi", "Tankara"],
-        "Category 3": ["Wankaner"]
+        "Category 2": ["Halvad"],
+        "Category 3": ["Wankaner", "Morbi", "Tankara"]
     },
     "Narmada": {
         "Category 1": ["Garudeshwar", "Dediapada", "Tilakwada", "Sagbara"],
@@ -115,13 +115,13 @@ DISTRICT_TALUKAS = {
     },
     "Panch Mahals": {
         "Category 1": ["Ghoghamaba", "Morva (Hadaf)", "Jambughoda", "Shehera"],
-        "Category 2": ["Godhra", "Kalol"],
-        "Category 3": ["Halol"]
+        "Category 2": ["Godhra"],
+        "Category 3": ["Halol", "Kalol"]
     },
     "Patan": {
         "Category 1": ["Saraswati", "Santalpur", "Shankheshwar", "Sami", "Radhanpur", "Harij"],
-        "Category 2": ["Sidhpur", "Chanasma"],
-        "Category 3": ["Patan"]
+        "Category 2": ["Sidhpur", "Chanasma","Patan"],
+        "Category 3": []
     },
     "Porbandar": {
         "Category 1": ["Kutiyana"],
@@ -130,8 +130,8 @@ DISTRICT_TALUKAS = {
     },
     "Rajkot": {
         "Category 1": ["Vinchhlya", "Jamkandorna"],
-        "Category 2": ["Jasdan", "Upleta", "Dhoraji", "Jetpur", "Kotda Sangani", "Gondal"],
-        "Category 3": ["Paddhari", "Lodhika", "Rajkot"]
+        "Category 2": ["Jasdan", "Upleta", "Dhoraji", "Jetpur", "Gondal"],
+        "Category 3": ["Paddhari", "Lodhika", "Rajkot", "Kotda Sangani"]
     },
     "Sabar Kantha": {
         "Category 1": ["Poshina", "Vijaynagar", "Khedbrahma"],
@@ -140,8 +140,8 @@ DISTRICT_TALUKAS = {
     },
     "Surat": {
         "Category 1": ["Umarpada", "Mahuva"],
-        "Category 2": ["Mandvi", "Bardoli", "Palsana", "Chorasi", "Olpad"],
-        "Category 3": ["Mangrol", "Kamrej", "Surat City"]
+        "Category 2": ["Mandvi", "Bardoli"],
+        "Category 3": ["Mangrol", "Kamrej", "Surat City", "Palsana", "Chorasi", "Olpad"]
     },
     "Surendranagar": {
         "Category 1": ["Lakhtar", "Chuda", "Muli", "Sayla", "Limbdi", "Dasada", "Chotila"],
@@ -154,14 +154,14 @@ DISTRICT_TALUKAS = {
         "Category 3": ["Vyara"]
     },
     "The Dangs": {
-        "Category 1": ["Subir", "Waghai", "Ahwa"],
+        "Category 1": ["Subir", "Waghai", "Aahva"],
         "Category 2": [],
         "Category 3": []
     },
     "Vadodara": {
         "Category 1": ["Sinor", "Desar"],
-        "Category 2": ["Dabhoi", "Karjan", "Padra", "Savli"],
-        "Category 3": ["Vaghodia", "Vadodara"]
+        "Category 2": ["Dabhoi"],
+        "Category 3": ["Vaghodia", "Vadodara", "Karjan", "Padra", "Savli"]
     },
     "Valsad": {
         "Category 1": ["Kaprada", "Dharampur"],
@@ -561,4 +561,7 @@ def calculate_api():
     }
     
     return jsonify(result)
+
+if __name__ == "__main__":
+   app.run(debug=True)
 

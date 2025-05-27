@@ -14,17 +14,17 @@
         </header>
 
         <div class="login-container">
-            <div class="flash-messages">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="flash-message {{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
             
             {% if not otp_sent %}
             <form action="{{ url_for('login') }}" method="POST" id="emailForm" class="form-section">
@@ -43,7 +43,7 @@
                     <label class="form-label" for="otp">Enter OTP</label>
                     <input type="text" class="otp-input" id="otp" name="otp" 
                            maxlength="6" pattern="[0-9]{6}" required placeholder="000000">
-                    <div class="helper-text">Please check your email for the OTP</div>
+                    <div class="helper-text">Please check {{ session['otp_email'] }} for the OTP</div>
                 </div>
                 <button type="submit" class="submit-button">Verify OTP</button>
                 <div class="text-center margin-top-20">

@@ -1,5 +1,102 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
+from flask_mail import Mail, Message
 import math
+import os
+import random
+import string
+from functools import wraps
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
+
+app = Flask(__name__, 
+            static_folder="static",
+            template_folder="templates")
+app.secret_key = os.urandom(24)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+
+# Email configuration
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.getenv('EMAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL_USER')
+
+mail = Mail(app)
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_email' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def generate_otp():
+    return ''.join(random.choices(string.digits, k=6))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        if not email:
+            flash('Please provide an email address.', 'danger')
+            return redirect(url_for('login'))
+        
+        otp = generate_otp()
+        session['otp'] = otp
+        session['otp_email'] = email
+        session['otp_time'] = datetime.now().timestamp()
+        
+        try:
+            msg = Message('Your OTP for Textile Subsidy Calculator',
+                        recipients=[email])
+            msg.body = f'Your OTP is: {otp}\nThis OTP will expire in 5 minutes.'
+            mail.send(msg)
+            flash('OTP has been sent to your email.', 'success')
+            return render_template('login.html', otp_sent=True)
+        except Exception as e:
+            flash('Failed to send OTP. Please try again.', 'danger')
+            print(e)
+            return redirect(url_for('login'))
+    
+    return render_template('login.html', otp_sent=False)
+
+@app.route('/verify-otp', methods=['POST'])
+def verify_otp():
+    otp = request.form.get('otp')
+    stored_otp = session.get('otp')
+    stored_email = session.get('otp_email')
+    otp_time = session.get('otp_time')
+    
+    if not all([otp, stored_otp, stored_email, otp_time]):
+        flash('Invalid session. Please try again.', 'danger')
+        return redirect(url_for('login'))
+    
+    # Check if OTP is expired (5 minutes)
+    if datetime.now().timestamp() - otp_time > 300:
+        flash('OTP has expired. Please request a new one.', 'danger')
+        return redirect(url_for('login'))
+    
+    if otp == stored_otp:
+        session.pop('otp', None)
+        session.pop('otp_time', None)
+        session.pop('otp_email', None)
+        session['user_email'] = stored_email
+        flash('Login successful!', 'success')
+        return redirect(url_for('welcome'))
+    else:
+        flash('Invalid OTP. Please try again.', 'danger')
+        return render_template('login.html', otp_sent=True)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
 
 # District and Taluka data from the PDF
 DISTRICT_TALUKAS = {
@@ -290,12 +387,8 @@ def check_expansion_eligibility(original_gfci, expansion_amount, machine_investm
     
     return is_eligible, messages, utilization_required
 
-app = Flask(__name__, 
-            static_folder="static",
-            template_folder="templates")
-
-
 @app.route('/', methods=['GET'])
+@login_required
 def welcome():
     """Render the initial welcome page with project type selection"""
     return render_template('welcome.html')

@@ -1,0 +1,84 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+ENV.bak/
+venv.bak/
+
+# Flask instance folder (contains config, uploads, etc.)
+instance/
+*.db
+*.sqlite3
+
+# Flask cache or session files
+*.log
+*.pid
+*.swp
+*.swo
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Pytest
+.pytest_cache/
+
+# Editor/IDE folders
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# macOS / Linux / Windows files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Local env variables
+.env
+.env.*
+
+# Gunicorn and other server logs
+gunicorn.log
+
+# Docker files (if using)
+*.tar
+*.img

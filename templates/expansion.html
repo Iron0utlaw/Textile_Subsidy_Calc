@@ -7,6 +7,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="user-info">
+            <span class="user-email">{{ session['user_email'] }}</span>
+            <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        </div>
         <header>
             <h1>Textile Subsidy Calculator</h1>
             <p>Expansion / Diversification Project Eligibility Check</p>

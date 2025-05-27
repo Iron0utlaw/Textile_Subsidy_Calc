@@ -6,7 +6,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
+    <div class="container position-relative">
+        <div class="user-info">
+            <span class="user-email">{{ session['user_email'] }}</span>
+            <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        </div>
+
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
         <header>
             <h1>Textile Subsidy Calculator</h1>
             <p>Calculate eligible subsidies and financial analysis for textile industry investments</p>
@@ -94,5 +111,19 @@
             <p>&copy; 2025 Textile Subsidy Calculator | Developed for Textile Industry</p>
         </footer>
     </div>
+
+    <script>
+        // Simple JavaScript for flash message dismissal
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(message => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-10px)';
+                    setTimeout(() => message.remove(), 300);
+                });
+            }, 5000);
+        });
+    </script>
 </body>
 </html>

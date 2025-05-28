@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Textile Subsidy Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .logo {
+            max-width: 329px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <img src="{{ url_for('static', filename='requip.svg') }}" alt="Requip Logo" class="logo">
             <h1>Textile Subsidy Calculator</h1>
             <p>Secure login to access the calculator</p>
         </header>

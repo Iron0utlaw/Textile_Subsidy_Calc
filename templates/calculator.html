@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <title>Financial Analysis - Textile Subsidy Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,6 +20,7 @@
             <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
         </div>
         <header>
+            <img src="{{ url_for('static', filename='requip.svg') }}" alt="Requip Logo" class="logo">
             <h1>Textile Subsidy Calculator</h1>
             <p>Calculate eligible subsidies and financial analysis for textile industry investments</p>
         </header>

@@ -388,7 +388,7 @@ def check_expansion_eligibility(original_gfci, expansion_amount, machine_investm
     return is_eligible, messages, utilization_required
 
 @app.route('/', methods=['GET'])
-@login_required
+# @login_required
 def welcome():
     """Render the initial welcome page with project type selection"""
     return render_template('welcome.html')

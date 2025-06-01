@@ -25,6 +25,10 @@ app.config['MAIL_USERNAME'] = os.getenv('EMAIL_USER')
 app.config['MAIL_PASSWORD'] = os.getenv('EMAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL_USER')
 
+# Rate limiting configuration
+OTP_MAX_ATTEMPTS = 3
+OTP_WINDOW_MINUTES = 15
+
 mail = Mail(app)
 
 def login_required(f):
@@ -46,10 +50,29 @@ def login():
             flash('Please provide an email address.', 'danger')
             return redirect(url_for('login'))
         
+        # Check rate limiting
+        current_time = datetime.now()
+        otp_attempts = session.get('otp_attempts', [])
+        
+        # Remove attempts older than the window
+        window_start = current_time - timedelta(minutes=OTP_WINDOW_MINUTES)
+        otp_attempts = [attempt for attempt in otp_attempts if datetime.fromtimestamp(attempt) > window_start]
+        
+        # Check if max attempts reached
+        if len(otp_attempts) >= OTP_MAX_ATTEMPTS:
+            next_attempt_time = datetime.fromtimestamp(otp_attempts[0]) + timedelta(minutes=OTP_WINDOW_MINUTES)
+            wait_minutes = math.ceil((next_attempt_time - current_time).total_seconds() / 60)
+            flash(f'Too many OTP requests. Please try again in {wait_minutes} minutes.', 'danger')
+            return redirect(url_for('login'))
+        
         otp = generate_otp()
         session['otp'] = otp
         session['otp_email'] = email
-        session['otp_time'] = datetime.now().timestamp()
+        session['otp_time'] = current_time.timestamp()
+        
+        # Add current attempt to the list
+        otp_attempts.append(current_time.timestamp())
+        session['otp_attempts'] = otp_attempts
         
         try:
             msg = Message('Your OTP for Textile Subsidy Calculator',
@@ -94,7 +117,7 @@ def verify_otp():
 
 @app.route('/logout')
 def logout():
-    session.clear()
+    session.clear()  # This will also clear the OTP attempts
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
